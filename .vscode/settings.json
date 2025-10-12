@@ -1,0 +1,11 @@
+{
+  "material-icon-theme.folders.associations": {
+    "adapters": "pipe",
+    "usecases": "rules",
+    "external": "tools",
+    "entity": "svg",
+    "domain": "api",
+    "infrastructure": "pipe",
+    "gateway": "tools"
+  }
+}
