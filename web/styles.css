@@ -26,8 +26,20 @@
   .header h1 {
       font-size: 16px;
       font-weight: 600;
-      color: #ececec;
+      color: #ececec93;
   }
+
+  .logo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* .user-message {
+    display: flex;
+    justify-content: end;
+  } */
 
   .new-chat-btn {
       background: #3f3f3f;
@@ -103,7 +115,7 @@
   }
 
   .avatar.assistant {
-      background: #19c37d;
+      background: transparent;
       color: white;
   }
 

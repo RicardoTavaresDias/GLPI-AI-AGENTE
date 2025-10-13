@@ -36,22 +36,13 @@ function addMessage(content, isUser) {
     messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
     
     messageDiv.innerHTML = `
-        <div class="avatar ${isUser ? 'user' : 'assistant'}">
-            ${isUser ? 'U' : 'AI'}
-        </div>
-        <div class="message-content">
-            ${formatMessage(content)}
+        <div class="message-content user-message">
+            ${marked.parse(content)}
         </div>
     `;
     
     chatContainer.appendChild(messageDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function formatMessage(content) {
-    // Converte quebras de linha em parágrafos
-    const paragraphs = content.split('\n\n').filter(p => p.trim());
-    return paragraphs.map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`).join('');
 }
 
 function escapeHtml(text) {
@@ -89,7 +80,7 @@ function showError(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'message assistant';
     errorDiv.innerHTML = `
-        <div class="avatar assistant">AI</div>
+        <img class="avatar assistant" src="./assets/logo.png" alt="Logo da AI"/>
         <div class="message-content">
             <div class="error-message">
                 ❌ Erro: ${escapeHtml(message)}
@@ -124,8 +115,9 @@ async function sendMessage() {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'message assistant';
   messageDiv.id = uniqueId;
+  
   messageDiv.innerHTML = `
-      <div class="avatar assistant">AI</div>
+      <img class="avatar assistant" src="./assets/logo.png" alt="Logo da AI"/>
       <div class="message-content">
           <div class="loading">
               <span></span>
@@ -172,7 +164,7 @@ async function sendMessage() {
         accumulatedText += chunk;
         
         // Atualiza o conteúdo em tempo real
-        streamingContent.innerHTML = formatMessage(accumulatedText);
+        streamingContent.innerHTML = marked.parse(accumulatedText);
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 

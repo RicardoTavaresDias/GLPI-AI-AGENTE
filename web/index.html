@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
     <link rel="stylesheet" href="styles.css">
-    <title>AI Chat</title>
+    <title>AI Assistant</title>
 </head>
 <body>
     <div class="header">
-        <h1>AI Assistant</h1>
+        <div class="logo">
+            <img class="avatar assistant" src="./assets/logo.png" alt="Logo da AI"/>
+            <h1>AI Assistant</h1>
+        </div>      
         <button class="new-chat-btn" onclick="clearChat()">+ Nova Conversa</button>
     </div>
 
@@ -36,6 +40,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
