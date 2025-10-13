@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>AI Chat</title>
+</head>
+<body>
+    <div class="header">
+        <h1>AI Assistant</h1>
+        <button class="new-chat-btn" onclick="clearChat()">+ Nova Conversa</button>
+    </div>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="empty-state">
+            <h2>Como posso ajudar você hoje?</h2>
+            <p>Digite sua mensagem abaixo para começar</p>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <div class="input-wrapper">
+            <textarea 
+                id="messageInput" 
+                placeholder="Envie uma mensagem..." 
+                rows="1"
+                onkeydown="handleKeyPress(event)"
+                oninput="autoResize(this)"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
