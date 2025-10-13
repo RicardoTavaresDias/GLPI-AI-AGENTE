@@ -1,4 +1,4 @@
-import { IAICacheGateway } from "@/domain/gateway/cache.gateway"
+import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway"
 
 export class CacheRepository<T> implements IAICacheGateway<T> {
   private cache = new Map()

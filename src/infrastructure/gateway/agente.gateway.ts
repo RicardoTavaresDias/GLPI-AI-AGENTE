@@ -2,13 +2,13 @@ import {
   DecisionInputDto as DecisionInputDtoOpenAI,
   DecisionOutputDto as DecisionOutputDtoOpenAI,
   ChatMessage as ChatMessageOpenAI
-} from "@/domain/gateway/mcp/agenteAI-openAI"
+} from "@/infrastructure/gateway/mcp/agenteAI-openAI"
 
 import { 
   DecisionInputDto as DecisionInputDtoGeminai, 
   DecisionOutputDto as DecisionOutputDtoGeminai,
   ChatMessage as ChatMessageGeminai
-} from "@/domain/gateway/mcp/agenteAI-geminai"
+} from "@/infrastructure/gateway/mcp/agenteAI-geminai"
 
 import { IAICacheGateway } from "./cache.gateway"
 

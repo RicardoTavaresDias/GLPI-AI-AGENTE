@@ -2,14 +2,14 @@ import { IUsecase } from "./usecase";
 import { CreateCalledTool } from "@/infrastructure/mcp/tools/create-called.tool";
 import { CalledsTool } from "@/infrastructure/mcp/tools/calleds.tool";
 import { EntityTool } from "@/infrastructure/mcp/tools/entity.tool";
-import { ChatMessage as ChatMessageGeminai, FunctionDeclaration } from "../domain/gateway/mcp/agenteAI-geminai";
+import { ChatMessage as ChatMessageGeminai, FunctionDeclaration } from "../infrastructure/gateway/mcp/agenteAI-geminai";
 import { FunctionCall } from "@google/genai";
 import { GLPICalledsRepository } from "@/infrastructure/repositories/glpi/glpi-calleds.repository";
 import { GLPICreateCalledRepository } from "@/infrastructure/repositories/glpi/glpi-create-called.repository";
 import { GLPIEntityRepository } from "@/infrastructure/repositories/glpi/glpi.entity.repository";
-import { inputCreateCalledDto } from "@/domain/gateway/glpi/glpi-create-called.gateway";
-import { ChatMessage as ChatMessageOpenAI } from "@/domain/gateway/mcp/agenteAI-openAI";
-import { IAICacheGateway } from "@/domain/gateway/cache.gateway";
+import { inputCreateCalledDto } from "@/infrastructure/gateway/glpi/glpi-create-called.gateway";
+import { ChatMessage as ChatMessageOpenAI } from "@/infrastructure/gateway/mcp/agenteAI-openAI";
+import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
 
 export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
   constructor (

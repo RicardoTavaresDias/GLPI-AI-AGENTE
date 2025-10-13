@@ -1,4 +1,4 @@
-import { CreateCalled, GLPICreateCalledGateway, inputCreateCalledDto } from "@/domain/gateway/glpi/glpi-create-called.gateway";
+import { CreateCalled, GLPICreateCalledGateway, inputCreateCalledDto } from "@/infrastructure/gateway/glpi/glpi-create-called.gateway";
 import { Api } from "@/shared/utils/api";
 
 export interface InputCreateCalledDto {

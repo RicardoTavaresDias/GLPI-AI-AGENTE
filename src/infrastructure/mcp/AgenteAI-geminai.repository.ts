@@ -1,10 +1,10 @@
-import { IAgenteAIGateway } from "@/domain/gateway/agente.gateway"
+import { IAgenteAIGateway } from "@/infrastructure/gateway/agente.gateway"
 import { GoogleGenAI } from "@google/genai"; 
 import { buildSystemPrompt } from "@/infrastructure/mcp/prompts/prompt";
 import { buildDocsSystemPrompt } from "./prompts/prompt"
 import { docAgenteDiretrizes } from "./resources";
-import { DecisionInputDto, DecisionOutputDto, ChatMessage as ChatMessageGeminai } from "../../domain/gateway/mcp/agenteAI-geminai"
-import { IAICacheGateway } from "@/domain/gateway/cache.gateway";
+import { DecisionInputDto, DecisionOutputDto, ChatMessage as ChatMessageGeminai } from "@/infrastructure/gateway/mcp/agenteAI-geminai"
+import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
 
 export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInputDto, DecisionOutputDto, ChatMessageGeminai> {
   private readonly systemPrompt: string = buildSystemPrompt()

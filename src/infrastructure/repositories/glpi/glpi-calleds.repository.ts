@@ -1,4 +1,4 @@
-import { Calleds, CloseCalled, FollowUpCalled, GLPICalledsGateway, TaskCalled } from "@/domain/gateway/glpi/glpi-calleds.gateway";
+import { Calleds, CloseCalled, FollowUpCalled, GLPICalledsGateway, TaskCalled } from "@/infrastructure/gateway/glpi/glpi-calleds.gateway";
 import { Api } from "@/shared/utils/api";
 
 export interface InputCloseCalledDto {

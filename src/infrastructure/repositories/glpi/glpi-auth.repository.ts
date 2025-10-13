@@ -1,4 +1,4 @@
-import { GLPIAuthGateway, InitSession } from "@/domain/gateway/glpi/glpi-auth.gateway";
+import { GLPIAuthGateway, InitSession } from "@/infrastructure/gateway/glpi/glpi-auth.gateway";
 import { env } from "@/shared/config/env";
 
 export class GLPIAuthRepository implements GLPIAuthGateway {

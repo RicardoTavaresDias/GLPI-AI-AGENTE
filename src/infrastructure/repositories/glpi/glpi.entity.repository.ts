@@ -1,4 +1,4 @@
-import { Entity, GLPIEntityGateway } from "@/domain/gateway/glpi/glpi.entity.gateway";
+import { Entity, GLPIEntityGateway } from "@/infrastructure/gateway/glpi/glpi.entity.gateway";
 import { Api } from "@/shared/utils/api";
 
 export class GLPIEntityRepository implements GLPIEntityGateway {

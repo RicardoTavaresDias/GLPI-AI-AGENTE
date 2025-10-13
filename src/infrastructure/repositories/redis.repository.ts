@@ -1,4 +1,4 @@
-import { IAICacheGateway } from "@/domain/gateway/cache.gateway"
+import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway"
 import { redisClient, connectRedis } from "@/shared/config/redis"
 
 export class CacheRedisRepository<T> implements IAICacheGateway<T> {

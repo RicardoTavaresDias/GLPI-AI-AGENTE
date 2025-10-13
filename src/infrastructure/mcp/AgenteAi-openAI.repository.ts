@@ -2,9 +2,9 @@ import OpenAI from "openai";
 import { buildDocsSystemPrompt } from "./prompts/prompt"
 import { buildSystemPrompt } from "@/infrastructure/mcp/prompts/prompt";
 import { docAgenteDiretrizes } from "./resources";
-import { ChatMessage as ChatMessageOpenAI, DecisionInputDto, DecisionOutputDto, ChatCompletionFunctionTool, FunctionDeclaration } from "../../domain/gateway/mcp/agenteAI-openAI"
-import { IAgenteAIGateway } from "@/domain/gateway/agente.gateway";
-import { IAICacheGateway } from "@/domain/gateway/cache.gateway";
+import { ChatMessage as ChatMessageOpenAI, DecisionInputDto, DecisionOutputDto, ChatCompletionFunctionTool, FunctionDeclaration } from "@/infrastructure/gateway/mcp/agenteAI-openAI"
+import { IAgenteAIGateway } from "@/infrastructure/gateway/agente.gateway";
+import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
 
 export class AgenteAIOpenAIRepository implements IAgenteAIGateway<DecisionInputDto, DecisionOutputDto, ChatMessageOpenAI> {
   private readonly systemPrompt: string = buildSystemPrompt()
