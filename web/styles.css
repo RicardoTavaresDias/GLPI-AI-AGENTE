@@ -26,7 +26,7 @@
   .header h1 {
       font-size: 16px;
       font-weight: 600;
-      color: #ececec93;
+      color: #ececec;
   }
 
   .logo {
@@ -36,10 +36,20 @@
     justify-content: center;
   }
 
+  .slogan {
+    color: #ececec75;
+    font-weight: 600;
+    font-size: 11px;
+  }
+
   /* .user-message {
     display: flex;
     justify-content: end;
   } */
+
+  .chat-container-logo {
+    width: 80px;
+  }
 
   .new-chat-btn {
       background: #3f3f3f;

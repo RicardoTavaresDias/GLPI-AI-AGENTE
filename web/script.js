@@ -18,6 +18,7 @@ function handleKeyPress(event) {
 function clearChat() {
     chatContainer.innerHTML = `
         <div class="empty-state">
+            <img class="chat-container-logo" src="./assets/logo.png" alt="Logo da AI"/>
             <h2>Como posso ajudar você hoje?</h2>
             <p>Digite sua mensagem abaixo para começar</p>
         </div>
