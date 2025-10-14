@@ -2,19 +2,19 @@ import { IUsecase } from "./usecase";
 import { CreateCalledTool } from "@/infrastructure/mcp/tools/create-called.tool";
 import { CalledsTool } from "@/infrastructure/mcp/tools/calleds.tool";
 import { EntityTool } from "@/infrastructure/mcp/tools/entity.tool";
-import { ChatMessage as ChatMessageGeminai, FunctionDeclaration } from "../infrastructure/gateway/mcp/agenteAI-geminai";
+import { ChatMessage, DecisionInputDto, DecisionOutputDto, FunctionDeclaration } from "../infrastructure/gateway/mcp/agenteAI";
 import { FunctionCall } from "@google/genai";
 import { GLPICalledsRepository } from "@/infrastructure/repositories/glpi/glpi-calleds.repository";
 import { GLPICreateCalledRepository } from "@/infrastructure/repositories/glpi/glpi-create-called.repository";
 import { GLPIEntityRepository } from "@/infrastructure/repositories/glpi/glpi.entity.repository";
 import { inputCreateCalledDto } from "@/infrastructure/gateway/glpi/glpi-create-called.gateway";
-import { ChatMessage as ChatMessageOpenAI } from "@/infrastructure/gateway/mcp/agenteAI-openAI";
 import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
+import { IAgenteAIGateway } from "@/infrastructure/gateway/agente.gateway";
 
 export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
   constructor (
-    private readonly agenteAI: any,
-    private readonly cache: IAICacheGateway<ChatMessageOpenAI | ChatMessageGeminai>,
+    private readonly agenteAI: IAgenteAIGateway<DecisionInputDto, DecisionOutputDto>,
+    private readonly cache: IAICacheGateway<ChatMessage>,
     private readonly createCalledTool: CreateCalledTool,
     private readonly calledsTool: CalledsTool,
     private readonly entityTool: EntityTool,
@@ -23,13 +23,13 @@ export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
     private readonly glpiEntityRepository: GLPIEntityRepository
   ) {}
 
-  public async *execute(input: string): AsyncGenerator<string> {
-    await this.agenteAI.cacheMessageUser("user", input)
+  public async *execute(input?: string): AsyncGenerator<string> {
+    input && await this.agenteAI.cacheMessageUser("user", input)
 
     const tools: FunctionDeclaration[] = this.buildTools()
 
     const response = this.agenteAI.decided({
-      contents: await this.cache.getSession('message'),
+      contents: await this.cache.getSession('message') as ChatMessage[],
       functionDeclarations: [...tools]
     })
 
@@ -63,7 +63,7 @@ export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
         yield chunk
       } else if ("functionCalls" in chunk) {
         await this.agenteFuction(chunk.functionCalls)
-        const returnAgenteFunction = this.agenteReturnFuction()
+        const returnAgenteFunction = this.execute()
 
         for await (const chunk of returnAgenteFunction) {
           systemCover.push(chunk)
@@ -81,29 +81,19 @@ export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
     const functionCalls = event[0]
     const glpiFunction = this.glpiFunction(functionCalls)
 
-    const functionResult = await glpiFunction[functionCalls?.name as keyof typeof glpiFunction]()
-    await this.agenteAI.cacheMessageFunction(functionCalls.name!, functionResult)
+    const functionResult = glpiFunction[functionCalls?.name as keyof typeof glpiFunction]
+    await this.agenteAI.cacheMessageFunction(functionCalls.name!, await functionResult())
   }
 
   private glpiFunction (functionCalls: any) {
     return {
-      calledsAll: async () => await this.glpiCalledRepository.calledsAll(),
-      taskCalled: async () => await this.glpiCalledRepository.taskCalled(functionCalls.args?.idTiket as number),
-      calledById: async () => await this.glpiCalledRepository.calledById(functionCalls.args?.idTiket as number),
-      followUpCalled: async () => await this.glpiCalledRepository.followUpCalled(functionCalls.args?.idTiket as number),
-      closeCalled: async () => await this.glpiCalledRepository.closeCalled(functionCalls.args?.idTiket as number, functionCalls.args?.descript as string),
-      newCalled: async () => await this.glpiCreateCalledRepository.newCalled(functionCalls.args?.input as inputCreateCalledDto),
-      entity: async () => await this.glpiEntityRepository.entity()
-    }
-  }
-
-  private async *agenteReturnFuction (): AsyncGenerator<string> {
-    const result = await this.agenteAI.agenteFunction(this.cache, 'message')
-    
-    for await (const chunk of result) {
-      if(chunk) {
-        yield chunk
-      }
+      calledsAll: () => this.glpiCalledRepository.calledsAll(),
+      taskCalled: () => this.glpiCalledRepository.taskCalled(functionCalls.args?.idTiket as number),
+      calledById: () => this.glpiCalledRepository.calledById(functionCalls.args?.idTiket as number),
+      followUpCalled: () => this.glpiCalledRepository.followUpCalled(functionCalls.args?.idTiket as number),
+      closeCalled: () => this.glpiCalledRepository.closeCalled(functionCalls.args?.idTiket as number, functionCalls.args?.descript as string),
+      newCalled: () => this.glpiCreateCalledRepository.newCalled(functionCalls.args?.input as inputCreateCalledDto),
+      entity: () => this.glpiEntityRepository.entity()
     }
   }
 }

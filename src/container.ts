@@ -1,5 +1,4 @@
 import { AgenteAIGeminaiRepository } from "./infrastructure/mcp/AgenteAI-geminai.repository";
-import { AgenteAIOpenAIRepository } from "./infrastructure/mcp/AgenteAi-openAI.repository";
 import { CacheRepository } from "./infrastructure/repositories/cache.repository";
 import { CacheRedisRepository } from "./infrastructure/repositories/redis.repository";
 import { CreateCalledTool } from "./infrastructure/mcp/tools/create-called.tool";
@@ -10,7 +9,6 @@ import { GLPICreateCalledRepository } from "./infrastructure/repositories/glpi/g
 import { GLPIEntityRepository } from "./infrastructure/repositories/glpi/glpi.entity.repository";
 import { ProcessAIAgentRequestUsecase } from "@/usecases/process-ai-agent-request.usecase";
 import { google } from "@/shared/config/google"
-import { openAI } from "@/shared/config/openAI";
 import { Api } from "@/shared/utils/api"
 import { GlpiSession } from "@/domain/entity/glpi-session"
 import { GLPIAuthRepository } from "./infrastructure/repositories/glpi/glpi-auth.repository";
@@ -54,18 +52,7 @@ export class Container {
   // Controller HTTP
   public serviceAgenteGLPIController = new ServiceAgenteGLPIController(
     this.processAIAgentRequestUsecase
-  ) 
-
-  /*
-
-  // Infra: cache + IA => OpenAI + Redis
-  private cacheRedisRepository = new CacheRedisRepository()
-  private agenteAIOpenAIRepository = new AgenteAIOpenAIRepository(
-    openAI,
-    this.cacheRedisRepository
   )
-
-  */
 }
 
 

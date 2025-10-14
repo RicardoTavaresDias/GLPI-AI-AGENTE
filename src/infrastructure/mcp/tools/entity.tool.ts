@@ -1,4 +1,4 @@
-import { FunctionDeclaration } from "@/infrastructure/gateway/mcp/agenteAI-geminai"
+import { FunctionDeclaration } from "@/infrastructure/gateway/mcp/agenteAI"
 
 export class EntityTool {
   public entity(): FunctionDeclaration {

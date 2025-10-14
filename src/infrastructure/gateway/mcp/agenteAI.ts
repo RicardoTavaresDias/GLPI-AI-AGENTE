@@ -1,12 +1,15 @@
+export interface MessagePart {
+  text: string
+}
+
 export interface ChatMessage {
-  role: "user"  | "system"  | "tool" | "assistant" | any
-  content: string
-  tool_call_id?: string
+  role: "user" | "model" | "system" | "function" 
+  parts: MessagePart[] | any
 }
 
 export interface DecisionInputDto {
   contents: ChatMessage[]
-  functionDeclarations: FunctionDeclaration[]
+  functionDeclarations: FunctionDeclaration[] 
 }
 
 export interface FunctionDeclaration {
@@ -16,19 +19,10 @@ export interface FunctionDeclaration {
   required?: string[]              
 }
 
-export type ChatCompletionFunctionTool = {
-  type: "function"; 
-  function: {
-    name: string;
-    description?: string;
-    parameters: Record<string, any>;
-  }
-}
-
  interface FunctionCall {
-  id?: string | undefined;
-  args?: Record<string, unknown> | undefined;
-  name?: string | undefined;
+    id?: string | undefined;
+    args?: Record<string, unknown> | undefined;
+    name?: string | undefined;
 }
 
 export interface FunctionCallDecisionOutputDto {

@@ -3,10 +3,10 @@ import { GoogleGenAI } from "@google/genai";
 import { buildSystemPrompt } from "@/infrastructure/mcp/prompts/prompt";
 import { buildDocsSystemPrompt } from "./prompts/prompt"
 import { docAgenteDiretrizes } from "./resources";
-import { DecisionInputDto, DecisionOutputDto, ChatMessage as ChatMessageGeminai } from "@/infrastructure/gateway/mcp/agenteAI-geminai"
+import { DecisionInputDto, DecisionOutputDto, ChatMessage as ChatMessageGeminai } from "@/infrastructure/gateway/mcp/agenteAI"
 import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
 
-export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInputDto, DecisionOutputDto, ChatMessageGeminai> {
+export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInputDto, DecisionOutputDto> {
   private readonly systemPrompt: string = buildSystemPrompt()
   private readonly docsPrompt = buildDocsSystemPrompt(docAgenteDiretrizes())
   
@@ -55,24 +55,7 @@ export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInput
     }])
   }
 
-  public async *agenteFunction (cache: IAICacheGateway<ChatMessageGeminai>, key: string): AsyncGenerator<string> {    
-    const resultQuestion = await this.agenteAI.models.generateContentStream({
-      model: 'gemini-2.5-flash-preview-09-2025',
-      contents: await cache.getSession(key), 
-      config: {
-        temperature: 0.9,
-        systemInstruction: this.systemPrompt,
-      }
-    })
-
-    for await (const chunk of resultQuestion) {
-      if (chunk) {
-        yield chunk.text as string
-      }
-    }
-  }
-
-  public async cacheMessageFunction (functionName: string, functionResult: string): Promise<void> {
+  public async cacheMessageFunction (functionName: string, functionResult: any): Promise<void> {
     return await this.cache.addMessage('message', [{
       role: "function",
       parts: [{

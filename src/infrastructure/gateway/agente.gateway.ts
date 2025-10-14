@@ -1,31 +1,5 @@
-import { 
-  DecisionInputDto as DecisionInputDtoOpenAI,
-  DecisionOutputDto as DecisionOutputDtoOpenAI,
-  ChatMessage as ChatMessageOpenAI
-} from "@/infrastructure/gateway/mcp/agenteAI-openAI"
-
-import { 
-  DecisionInputDto as DecisionInputDtoGeminai, 
-  DecisionOutputDto as DecisionOutputDtoGeminai,
-  ChatMessage as ChatMessageGeminai
-} from "@/infrastructure/gateway/mcp/agenteAI-geminai"
-
-import { IAICacheGateway } from "./cache.gateway"
-
-
-export type AgenteAIOpenAIGateway = IAgenteAIGateway<
-  DecisionInputDtoOpenAI,
-  DecisionOutputDtoOpenAI,
-  ChatMessageOpenAI
->
-
-export type AgenteAIGeminaiGateway = IAgenteAIGateway<
-  DecisionInputDtoGeminai,
-  DecisionOutputDtoGeminai,
-  ChatMessageGeminai
->
-
-export interface IAgenteAIGateway<I, O, M> {
+export interface IAgenteAIGateway<I, O> {
   decided(input: I): AsyncGenerator<O>
-  agenteFunction(cache: IAICacheGateway<M>, key: string): AsyncGenerator<string>
+  cacheMessageUser(role: "user" | "model", message: string): Promise<void>
+  cacheMessageFunction(functionName: string, functionResult: any): Promise<void>
 }
