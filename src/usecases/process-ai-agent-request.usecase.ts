@@ -77,7 +77,6 @@ export class ProcessAIAgentRequestUsecase implements IUsecase<string, string> {
   }
 
   private async agenteFuction (event: FunctionCall[]): Promise<void> {
-    console.log("Usecase agenteFuction => event: ", event)
     const functionCalls = event[0]
     const glpiFunction = this.glpiFunction(functionCalls)
 

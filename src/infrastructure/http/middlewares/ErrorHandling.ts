@@ -7,10 +7,8 @@ export function ErrorHandling (error: any, request: Request, response: Response,
   }
 
   if (error.status === 429) {
-    console.log(error)
-    return response.status(429).json({ message: `Agente AI: ${error.name}` })
+    return response.status(429).json({ message: `Agente AI: ${error.message}` })
   }
 
-  console.log(error)
   response.status(500).json({ message: error.message, error: error.meta })
 }
