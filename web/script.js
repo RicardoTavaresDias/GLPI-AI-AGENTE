@@ -140,7 +140,7 @@ async function sendMessage() {
     });
 
     if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
+        throw new Error(`${response.message} : ${response.status}`);
     }
 
     const reader = response.body.getReader();

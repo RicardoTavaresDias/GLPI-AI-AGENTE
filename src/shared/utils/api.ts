@@ -1,5 +1,6 @@
 import { GlpiSession } from "@/domain/entity/glpi-session"
 import { env } from "../config/env"
+import { AppError } from "./AppError"
 
 export class Api {
   constructor(
@@ -15,23 +16,31 @@ export class Api {
   }
 
   public async get<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${env.URLGLPI}${endpoint}`, {
-      method: "GET",
-      headers: this.headers()
-    })
+    try {
+      const response = await fetch(`${env.URLGLPI}${endpoint}`, {
+        method: "GET",
+        headers: this.headers()
+      })
 
-    const result = await response.json() as T
-    return result
+      const result = await response.json() as T
+      return result
+    } catch (error: any) {
+      throw new AppError(error.message, 500)
+    }
   }
 
   public async create<T, D>(endpoint: string, data: D): Promise<T> {
-    const response = await fetch(`${env.URLGLPI}${endpoint}`, {
-      method: "POST",
-      headers: this.headers(),
-      body: JSON.stringify(data)
-    })
+    try {
+      const response = await fetch(`${env.URLGLPI}${endpoint}`, {
+        method: "POST",
+        headers: this.headers(),
+        body: JSON.stringify(data)
+      })
 
-    const result = await response.json() as T
-    return result
+      const result = await response.json() as T
+      return result
+    } catch (error: any) {
+      throw new AppError(error.message, 500)
+    }
   }
 }

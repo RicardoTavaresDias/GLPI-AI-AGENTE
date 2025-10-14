@@ -5,6 +5,7 @@ import { buildDocsSystemPrompt } from "./prompts/prompt"
 import { docAgenteDiretrizes } from "./resources";
 import { DecisionInputDto, DecisionOutputDto, ChatMessage as ChatMessageGeminai } from "@/infrastructure/gateway/mcp/agenteAI"
 import { IAICacheGateway } from "@/infrastructure/gateway/cache.gateway";
+import { AppError } from "@/shared/utils/AppError";
 
 export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInputDto, DecisionOutputDto> {
   private readonly systemPrompt: string = buildSystemPrompt()
@@ -16,34 +17,38 @@ export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInput
   ) {}
 
   public async *decided(input: DecisionInputDto): AsyncGenerator<DecisionOutputDto> {
-    const responseAI = await this.agenteAI.models.generateContentStream({
-      model: "gemini-2.5-flash-preview-09-2025",
-      contents: [
-       ...input.contents
-      ],
-      config: {
-        temperature: 0.9,
-        systemInstruction: `${this.systemPrompt}\n\n${this.docsPrompt}`,
-        tools: [{
-          functionDeclarations: [
-            ...input.functionDeclarations
-          ]
-        }]
-      }
-    })
- 
-    for await (const chunk of responseAI) {
+    try {
+      const responseAI = await this.agenteAI.models.generateContentStream({
+        model: "gemini-2.5-flash-preview-09-2025",
+        contents: [
+        ...input.contents
+        ],
+        config: {
+          temperature: 0.9,
+          systemInstruction: `${this.systemPrompt}\n\n${this.docsPrompt}`,
+          tools: [{
+            functionDeclarations: [
+              ...input.functionDeclarations
+            ]
+          }]
+        }
+      })
+  
+      for await (const chunk of responseAI) {
 
-      //  Texto normal sendo gerado
-      if ("text" in chunk && chunk.text) {
-        yield chunk.text
-      }
+        //  Texto normal sendo gerado
+        if ("text" in chunk && chunk.text) {
+          yield chunk.text
+        }
 
-      // Function calling detectado
-      if ("functionCalls" in chunk && chunk.functionCalls) {
-        yield { functionCalls: chunk.functionCalls }
+        // Function calling detectado
+        if ("functionCalls" in chunk && chunk.functionCalls) {
+          yield { functionCalls: chunk.functionCalls }
+        }
       }
-    }
+    } catch (error: any) {
+      throw new AppError(`Agente AI: ${error.message}`, error.status)
+    } 
   }
 
   public async cacheMessageUser (role: "user" | "model", message: string): Promise<void> {
