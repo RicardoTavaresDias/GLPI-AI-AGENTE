@@ -19,7 +19,7 @@ export class AgenteAIGeminaiRepository implements IAgenteAIGateway<DecisionInput
   public async *decided(input: DecisionInputDto): AsyncGenerator<DecisionOutputDto> {
     try {
       const responseAI = await this.agenteAI.models.generateContentStream({
-        model: "gemini-2.5-flash-preview-09-2025",
+        model: "gemini-2.5-flash",
         contents: [
         ...input.contents
         ],
